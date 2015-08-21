@@ -1,0 +1,39 @@
+p {
+  margin: 6px;
+}
+
+body {
+  background: #32566a;
+  font-family: 'Oswald', sans-serif;
+}
+
+.weight-result {
+  color: white;
+  font-size: 48px;
+  text-align: center;
+  margin-top: 200px;
+}
+
+.weight-numbers {
+  font-size: 164px;
+  color: #ddd;
+  /*color: #813a22;*/
+}
+
+
+html,
+body {
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* Scale canvas with resize attribute to full size */
+canvas[resize] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+}

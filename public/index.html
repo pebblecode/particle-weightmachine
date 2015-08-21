@@ -1,27 +1,67 @@
 <html>
 <head>
   <title>Weight Machine</title>
+  <link href='http://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
-  <div>
-    <p>The weight of the item is <span id="weight"></span>g</p>
+
+  <canvas id="canvas" resize></canvas>
+
+
+  <div class="weight-result">
+    <p>The weight of the item is</p>
+    <p class="weight-numbers"><span id="weight"></span>g</p>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    var socket = io();
+  <script type="text/javascript" src="js/mainsocket.js"></script>
 
-    var weightItem = document.getElementById('weight');
+  <script type="text/javascript" src="js/vendor/paper-full.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+        var amount = 45;
+        for (var i = 0; i < amount; i++) {
+            var path = new Path({
+                fillColor: {
+                    hue: 1,
+                    saturation: 1,
+                    brightness: Math.random()
+                },
+                closed: true
+            });
+        }
 
-    socket.on('message', function(message) {
+        var position = view.center;
+        var mousePos = view.center;
+        var children = project.activeLayer.children;
 
-      var item = JSON.parse(message);
+        function iterate(count) {
+            var delta = mousePos - position;
+            position += delta / 10;
+            for (var i = 1; i < amount; i++) {
+                var path = children[i];
+                var length = Math.abs(Math.sin(i + count / 40) * 300);
+                path.segments = [
+                    position + delta / 1.5,
+                    position + { angle: i / amount * 360, length: length },
+                    position + { angle: (i + 1) / amount * 360, length: length }
+                ];
+                path.fillColor.hue = count - length;
+            }
+        }
 
-      weightItem.innerHTML = item.result;
-    });
+        function onFrame(event) {
+            iterate(event.count);
+        }
 
-  </script>
+        function onMouseMove(event) {
+            iterate();
+            mousePos = event.point;
+        }
+    </script>
+
 
 </body>
 </html>
