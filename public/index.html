@@ -1,0 +1,27 @@
+<html>
+<head>
+  <title>Weight Machine</title>
+</head>
+
+<body>
+  <div>
+    <p>The weight of the item is <span id="weight"></span>g</p>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+
+    var weightItem = document.getElementById('weight');
+
+    socket.on('message', function(message) {
+
+      var item = JSON.parse(message);
+
+      weightItem.innerHTML = item.result;
+    });
+
+  </script>
+
+</body>
+</html>
