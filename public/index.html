@@ -20,47 +20,54 @@
   <script type="text/javascript" src="js/mainsocket.js"></script>
 
   <script type="text/javascript" src="js/vendor/paper-full.js"></script>
+
     <script type="text/paperscript" canvas="canvas">
-        var amount = 45;
-        for (var i = 0; i < amount; i++) {
-            var path = new Path({
-                fillColor: {
-                    hue: 1,
-                    saturation: 1,
-                    brightness: Math.random()
-                },
-                closed: true
-            });
-        }
 
-        var position = view.center;
-        var mousePos = view.center;
-        var children = project.activeLayer.children;
+      var centerPoint = view.center;
+      var mousePos = view.center;
 
-        function iterate(count) {
-            var delta = mousePos - position;
-            position += delta / 10;
-            for (var i = 1; i < amount; i++) {
-                var path = children[i];
-                var length = Math.abs(Math.sin(i + count / 40) * 300);
-                path.segments = [
-                    position + delta / 1.5,
-                    position + { angle: i / amount * 360, length: length },
-                    position + { angle: (i + 1) / amount * 360, length: length }
+
+      var path = new Path({
+      strokeColor: 'white'
+      });
+      var array = [[30, 75], [100, 20], [170, 75]];
+      path.addSegments(array);
+
+      path.strokeColor = '#669fa';
+      path.strokeWidth = 10;
+
+      path.strokeCap = 'round';
+
+
+      function onMouseMove(event) {
+          mousePos = event.point;
+
+          // path.segments = [
+          //           [centerPoint.x - 200,centerPoint.y], [centerPoint.x,centerPoint.y+300], [centerPoint.x + 200,centerPoint.y]
+          //       ];
+      }
+
+    function onFrame(event) {
+
+        var levelVar = testNum * 2;
+
+        var firstPoint = new Point (centerPoint.x - 200,centerPoint.y);
+        var firstSegment = new Point (50, levelVar);
+        var midPoint = new Point (centerPoint.x,centerPoint.y + (testNum*2));
+        var lastPoint = new Point (centerPoint.x + 200,centerPoint.y);
+        var lastSegment = new Point (-50, levelVar);
+
+          path.segments = [
+                    [firstPoint, null, firstSegment],
+                    // [midPoint],
+                    [lastPoint, lastSegment, null]
                 ];
-                path.fillColor.hue = count - length;
-            }
-        }
+                    path.smooth();
+      }
 
-        function onFrame(event) {
-            iterate(event.count);
-        }
-
-        function onMouseMove(event) {
-            iterate();
-            mousePos = event.point;
-        }
     </script>
+
+
 
 
 </body>

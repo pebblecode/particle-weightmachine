@@ -1,11 +1,12 @@
     var socket = io();
+    var testNum = 200;
 
     var weightItem = document.getElementById('weight');
 
     socket.on('message', function(message) {
 
-      var item = JSON.parse(message);
+      weightItem.innerHTML = message.result;
 
-      weightItem.innerHTML = item.result;
+      testNum = message.result;
 
     });
